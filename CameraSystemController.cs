@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections;
-using UnityEngine.InputSystem;
 
 namespace CameraSystem
 {
@@ -35,12 +34,6 @@ namespace CameraSystem
                 CurrentCamera = camera;
                 camera.Instance.MoveToTopOfPrioritySubqueue();
             }
-        }
-
-        private void Update()
-        {
-            if (Keyboard.current[Key.Space].wasPressedThisFrame)
-                Debug.Log(IsAllTriggersNotActive);
         }
 
         private void OnExit(CameraTrigger trigger)
