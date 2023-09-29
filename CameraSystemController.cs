@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 namespace CameraSystem
 {
@@ -12,6 +13,7 @@ namespace CameraSystem
 
         [field: SerializeField] public Transform Target { get; private set; }
         public Camera CurrentCamera { get; private set; }
+        public bool IsAllTriggersNotActive => _cameras.All(camera => camera.Trigger.IsActive == false);
 
         private void OnEnable()
         {
@@ -35,24 +37,41 @@ namespace CameraSystem
             }
         }
 
+        private void Update()
+        {
+            if (Keyboard.current[Key.Space].wasPressedThisFrame)
+                Debug.Log(IsAllTriggersNotActive);
+        }
+
         private void OnExit(CameraTrigger trigger)
         {
-            Camera camera = _cameras.SingleOrDefault(camera => camera.Trigger == trigger);
+            Camera exitCamera = _cameras.SingleOrDefault(camera => camera.Trigger == trigger);
+            Camera stayCamera = _cameras.SingleOrDefault(camera => camera.Trigger.IsActive);
 
-            if (CurrentCamera != camera)
+            if (stayCamera != null)
+            {
+                OnEnter(stayCamera.Trigger);
+                return;
+            }
+
+            if (CurrentCamera != exitCamera)
                 return;
 
-            if (camera.SwitchToFreeCameraDelay < 0)
+            if (exitCamera.SwitchToFreeCameraDelay < 0)
                 return;
 
-            StartCoroutine(SwitchToFreeCameraRoutine(camera.SwitchToFreeCameraDelay));
+            StartCoroutine(SwitchToFreeCameraRoutine(exitCamera.SwitchToFreeCameraDelay));
         }
 
         private IEnumerator SwitchToFreeCameraRoutine(float delay)
         {
             yield return new WaitForSeconds(delay);
-            _freeCamera.MoveToTopOfPrioritySubqueue();
-            CurrentCamera = null;
+
+            if (IsAllTriggersNotActive)
+            {
+                _freeCamera.MoveToTopOfPrioritySubqueue();
+                CurrentCamera = null;
+            }
         }
 
         private void OnDisable()

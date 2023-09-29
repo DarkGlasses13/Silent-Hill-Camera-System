@@ -10,6 +10,8 @@ namespace CameraSystem
 
         private Transform _target;
 
+        public bool IsActive { get; private set; }
+
         public void SetTarget(Transform target)
         {
             _target = target;
@@ -23,10 +25,16 @@ namespace CameraSystem
             }
         }
 
+        private void OnTriggerStay(Collider other)
+        {
+            IsActive = other.transform == _target;
+        }
+
         private void OnTriggerExit(Collider other)
         {
             if (other.transform == _target)
             {
+                IsActive = false;
                 OnExit?.Invoke(this);
             }
         }
