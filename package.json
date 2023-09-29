@@ -1,0 +1,21 @@
+{
+  "name": "com.darkglasses.silent-hill_camera_system",
+  "version": "1.0.0",
+  "displayName": "Silent Hill camera system",
+  "description": "Silent Hill camera system",
+  "documentationUrl": "https://github.com/DarkGlasses13/Silent-Hill-Camera-System",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:DarkGlasses13/Silent-Hill-Camera-System.git"
+  },
+  "licensesUrl": "https://github.com/DarkGlasses13/Silent-Hill-Camera-System/blob/main/LICENSE",
+  "dependencies": {},
+  "keywords": [
+    "Camera system"
+  ],
+  "author": {
+    "name": "DarkGlasses",
+    "email": "13_dark_glasses_13@proton.me",
+    "url": "https://t.me/DarkGlasses13"
+  }
+}
